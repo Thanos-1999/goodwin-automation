@@ -63,7 +63,6 @@ public class LoginPage {
     public void clickLogin_inactive_state() {
         loginButton.click(new Locator.ClickOptions().setForce(true));
         page.waitForTimeout(3000);
-
     }
 
     public void submitLogin(String username, String password) {

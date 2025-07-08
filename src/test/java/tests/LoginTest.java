@@ -1,7 +1,7 @@
 package tests;
 
 import base.BaseTest;
-import config.TestResultListener;
+import config.AllureHelper;
 import io.qameta.allure.Allure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTest extends BaseTest {
 
-    static TestResultListener listener = new TestResultListener(() -> page);
 
     private static final String BASE_URL = "https://goodwin.am/en/";
     private LoginPage loginPage;
@@ -48,13 +47,22 @@ public class LoginTest extends BaseTest {
     @Test
     @DisplayName("2. Empty Form Submission")
     public void testEmptyFormSubmission() {
-        Allure.step("Open the login modal");
-        loginPage.openLoginModal();
-        Allure.step("Click Log In without entering any credentials");
-        loginPage.clickLogin_inactive_state();
-        Allure.step("Check validation messages");
-        assertTrue(loginPage.isUsernameRequiredVisible(), "Username 'required' error not visible");
-        assertTrue(loginPage.isPasswordRequiredVisible(), "Password 'required' error not visible");
+        try {
+            Allure.step("Open the login modal");
+            loginPage.openLoginModal();
+            Allure.step("Click Log In without entering any credentials");
+            loginPage.clickLogin_inactive_state();
+            Allure.step("Check validation messages");
+            assertTrue(loginPage.isUsernameRequiredVisible(), "Username 'required' error not visible");
+            assertTrue(loginPage.isPasswordRequiredVisible(), "Password 'required' error not visible");
+
+            byte[] screenshot = page.screenshot();
+            Allure.getLifecycle().addAttachment("Manual Screenshot", "image/png", "png", screenshot);
+        } catch (Exception e) {
+            AllureHelper.attachScreenshot(page, "Failure Screenshot");
+            throw e;
+        }
+
     }
 
     @Test

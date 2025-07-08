@@ -14,8 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.nio.file.Paths;
 
 public class BaseTest {
-    protected Playwright playwright;
-    protected Browser browser;
+    protected static Playwright playwright;
+    protected static Browser browser;
     protected BrowserContext context;
     protected static Page page;
 
@@ -28,23 +28,18 @@ public class BaseTest {
         System.out.println("Screen size: " + width + "x" + height);
         playwright = Playwright.create();
         browser = BrowserFactory.getBrowser(playwright);
-        BrowserContext context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1920,1080));
+        this.context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1920,1080));
         page = context.newPage();
     }
 
-    @AfterEach
-    public void tearDown() {
-        if (context != null) {
-            context.close();
-        }
-        if (browser != null) {
-            browser.close();
-        }
-        if (playwright != null) {
-            playwright.close();
-        }
-    }}
 
+
+
+    @AfterEach
+    void teardown() {
+        browser.close();
+        playwright.close();
+    }}
 
 
 
