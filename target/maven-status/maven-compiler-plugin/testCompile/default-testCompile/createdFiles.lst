@@ -1,0 +1,6 @@
+base\BaseTest.class
+factory\BrowserFactory.class
+pages\CONTACTS.class
+config\ConfigReader.class
+pages\LoginPage.class
+tests\LoginTest.class
